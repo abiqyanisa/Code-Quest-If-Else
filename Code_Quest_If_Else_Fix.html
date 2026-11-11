@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Quest - If Else</title>
+
+    <style>
+        /* =========================
+           1. Pengaturan dasar
+        ========================== */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f3f6fc;
+            color: #203047;
+            font-family: system-ui, "Segoe UI", sans-serif;
+        }
+
+        .wrap {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px 14px;
+        }
+
+        .panel {
+            padding: 22px;
+            background: #fff;
+            border: 1px solid #dce4ef;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px #20304710;
+        }
+
+        /* =========================
+           2. Header dan progres
+        ========================== */
+        .top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .brand {
+            font-size: 20px;
+            font-weight: 950;
+        }
+
+        .brand span {
+            color: #3568d4;
+        }
+
+        .pill {
+            padding: 8px 12px;
+            border: 1px solid #dce4ef;
+            border-radius: 30px;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .bar {
+            height: 9px;
+            margin: 15px 0 22px;
+            overflow: hidden;
+            background: #e4eaf3;
+            border-radius: 20px;
+        }
+
+        .bar i {
+            display: block;
+            width: 0;
+            height: 100%;
+            background: #25a879;
+            transition: width 0.3s ease;
+        }
+
+        /* =========================
+           3. Teks dan informasi misi
+        ========================== */
+        .tag {
+            color: #3568d4;
+            font-size: 14px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin: 7px 0;
+            font-size: 30px;
+        }
+
+        p {
+            color: #66758a;
+            line-height: 1.5;
+        }
+
+        .case {
+            margin: 16px 0;
+            padding: 14px;
+            background: #f7f9ff;
+            border: 1px solid #e1e9fb;
+            border-radius: 14px;
+        }
+
+        .story {
+            margin-block: 7px;
+            font-size: 15px;
+        }
+
+        .task {
+            font-size: 13px;
+            color: #203047;
+            font-weight: 700;
+        }
+
+        /* =========================
+           4. Editor kode
+        ========================== */
+        .editor {
+            padding: 15px;
+            overflow-x: auto;
+            background: #172438;
+            color: #eaf1fb;
+            border-radius: 14px;
+        }
+
+        .caption {
+            margin-bottom: 10px;
+            color: #a9bddb;
+            font-size: 14px;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        .line {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            min-height: 43px;
+            font: 15px ui-monospace, Consolas, monospace;
+            white-space: nowrap;
+        }
+
+        .indent {
+            padding-left: 28px;
+        }
+
+        .fixed {
+            color: #c5d4e9;
+        }
+
+        .slot {
+            min-width: 110px;
+            min-height: 32px;
+            padding: 6px 9px;
+            background: #22344d;
+            color: #a9bddb;
+            border: 1.5px dashed #8199b9;
+            border-radius: 8px;
+            font: 700 15px ui-monospace, Consolas, monospace;
+            cursor: pointer;
+        }
+
+        .slot.syntax {
+            min-width: 83px;
+        }
+
+        .slot.condition {
+            min-width: 145px;
+        }
+
+        .slot.output {
+            min-width: 130px;
+        }
+
+        .slot.filled {
+            background: #e8f0ff;
+            color: #244b91;
+            border: 1.5px solid #75a5ff;
+        }
+
+        .slot.over {
+            outline: 3px solid #8bb2ff;
+        }
+
+        /* =========================
+           5. Area kartu dan panduan
+        ========================== */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 15px;
+        }
+
+        .bank {
+            padding: 13px;
+            background: #fbfcff;
+            border: 1px solid #dce4ef;
+            border-radius: 14px;
+        }
+
+        .bank h3 {
+            margin: 0;
+            font-size: 17px;
+        }
+
+        .bank small {
+            color: #66758a;
+        }
+
+        .cat {
+            margin: 14px 0 7px;
+            color: #66758a;
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            min-height: 35px;
+        }
+
+        .card {
+            padding: 9px 10px;
+            background: #fff;
+            border: 1.5px solid #cbd8ea;
+            border-radius: 9px;
+            box-shadow: 0 3px 0 #dce5f1;
+            font: 750 15px ui-monospace, Consolas, monospace;
+            cursor: grab;
+            touch-action: pan-y;
+        }
+
+        .card.selected {
+            background: #edf3ff;
+            outline: 3px solid #a9c4ff;
+        }
+
+        .card.used {
+            opacity: 0.25;
+            pointer-events: none;
+        }
+
+        /* =========================
+           6. Tombol dan umpan balik
+        ========================== */
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-top: 16px;
+        }
+
+        button.action {
+            padding: 11px 15px;
+            border: 0;
+            border-radius: 10px;
+            font-weight: 850;
+            cursor: pointer;
+        }
+
+        .primary {
+            background: #3568d4;
+            color: #fff;
+        }
+
+        .secondary {
+            background: #edf2f9;
+            color: #33445e;
+        }
+
+        .hint {
+            background: #fff4d8;
+            color: #76551a;
+        }
+
+        .next {
+            background: #1eae79;
+            color: #fff;
+            margin-left: auto;
+        }
+
+        .feedback {
+            display: none;
+            margin-top: 14px;
+            padding: 13px;
+            border-radius: 12px;
+            font-weight: 750;
+            line-height: 1.5;
+            width: fit-content;
+        }
+
+        .good {
+            display: block;
+            background: #e7f7ef;
+            color: #126b49;
+        }
+
+        .bad {
+            display: block;
+            background: #fff0f0;
+            color: #a33333;
+        }
+
+        .info {
+            display: block;
+            background: #fff7e5;
+            color: #79591b;
+        }
+
+        /* Grid judul misi dan feedback */
+        .title-feedback-grid {
+            display: grid;
+            grid-template-columns: auto auto;
+            gap: 12px;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+
+        .mission-heading {
+            margin: 7px;
+            min-width: 0;
+            display: block;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .mission-heading h1 {
+            font-size: 25px;
+        }
+
+        .mission-heading p {
+            margin: 0px;
+            font-size: 13px;
+        }
+
+        /* Penjelasan why di dalam feedback */
+        .feedback-why {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid currentColor;
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .feedback-why strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        #guide {
+            margin-top: 10px;
+            color: #66758a;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        /* =========================
+            Tampilan Score Akhir
+        ========================= */
+
+        /* HALAMAN HASIL AKHIR */
+        .completion {
+            text-align: center;
+            padding: 20px 10px 0;
+        }
+
+        .completion-trophy {
+            font-size: 65px;
+            margin-bottom: 8px;
+        }
+
+        .completion h1 {
+            font-size: 32px;
+            margin: 10px 0;
+        }
+
+        .completion p {
+            max-width: 650px;
+            margin: 10px auto;
+            line-height: 1.7;
+        }
+
+        .final-score {
+            display: inline-flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 18px 40px;
+            background: #f0f5ff;
+            border-radius: 15px;
+        }
+
+        .final-score strong {
+            color: #3568d4;
+            font-size: 38px;
+        }
+
+        .final-score span {
+            font-size: 12px;
+            font-weight: 850;
+        }
+
+        .result-heading {
+            margin: 10px 0;
+            font-size: 19px;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .result-card {
+            padding: 15px;
+            background: #f7f9ff;
+            border: 1px solid #dce4ef;
+            border-radius: 13px;
+        }
+
+        .result-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .result-number {
+            color: #3568d4;
+            font-size: 11px;
+            font-weight: 900;
+        }
+
+        .result-badge {
+            color: #126b49;
+            background: #e1f5eb;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 900;
+        }
+
+        .result-card h3 {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .result-card p {
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .result-why {
+            padding-top: 8px;
+            border-top: 1px solid #dce4ef;
+        }
+
+        .result-points {
+            color: #3568d4;
+            font-weight: 900;
+            font-size: 13px;
+        }
+
+        @media (max-width: 720px) {
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* =========================
+           7. Tampilan responsif
+        ========================== */
+        @media (max-width: 720px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .wrap {
+                padding: 12px 9px;
+            }
+
+            .panel {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+
+            .line {
+                gap: 4px;
+                font-size: 11px;
+            }
+
+            .slot {
+                min-width: 80px;
+                padding: 5px;
+                font-size: 10px;
+            }
+
+            .slot.condition {
+                min-width: 112px;
+            }
+
+            .slot.output {
+                min-width: 104px;
+            }
+
+            .slot.syntax {
+                min-width: 70px;
+            }
+
+            .title-feedback-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* =========================
+           8. Layout layar penuh
+        ========================== */
+        html,
+        body {
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+        }
+
+        .wrap {
+            width: 100%;
+            max-width: 1500px;
+            min-height: 100vh;
+            margin: 0 auto;
+            padding: 12px 18px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 16px;
+        }
+
+        .bar {
+            flex: 0 0 auto;
+            margin: 10px 0 12px;
+        }
+
+        .panel > h1 {
+            margin: 0;
+            font-size: 25px;
+        }
+
+        .panel > p {
+            margin: 0;
+            font-size: 13px;
+        }
+
+        .top-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            align-items: stretch;
+        }
+
+        .top-grid .case,
+        .guide-bank {
+            min-width: 0;
+            margin: 0;
+            padding: 12px 14px;
+        }
+
+        .case p {
+            margin: 7px 0;
+            font-size: 13px;
+        }
+
+        .guide-bank h3,
+        .card-bank h3 {
+            margin-bottom: 5px;
+        }
+
+        .guide-note {
+            margin: 5px 0 0;
+            font-size: 12px !important;
+        }
+
+        #guide {
+            margin-top: 7px;
+            font-size: 14px;
+            line-height: 1.55;
+        }
+
+        .work-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            flex: 1;
+            min-height: 250px;
+            align-items: stretch;
+        }
+
+        .work-grid .editor,
+        .card-bank {
+            min-width: 0;
+            height: 100%;
+            margin: 0;
+        }
+
+        .editor {
+            overflow: auto;
+            padding: 13px;
+        }
+
+        .line {
+            min-height: 36px;
+        }
+
+        .card-bank {
+            overflow: auto;
+            padding: 12px;
+        }
+
+        .card-bank .cat {
+            margin: 10px 0 6px;
+        }
+
+        .card {
+            padding: 7px 8px;
+            font-size: 15px;
+        }
+
+        .actions {
+            margin-top: 0;
+        }
+
+        .feedback {
+            margin-top: 0;
+            padding: 9px 12px;
+            font-size: 14px;
+        }
+
+        @media (min-width: 721px) and (min-height: 760px) {
+            .panel {
+                min-height: calc(100vh - 86px);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .work-grid {
+                grid-template-columns: minmax(0, 1fr) minmax(300px, 0.9fr);
+            }
+
+            .slot {
+                min-width: 90px;
+            }
+
+            .slot.condition {
+                min-width: 120px;
+            }
+
+            .slot.output {
+                min-width: 110px;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .wrap {
+                min-height: 100vh;
+                padding: 10px;
+            }
+
+            .panel {
+                gap: 12px;
+                padding: 14px;
+            }
+
+            .top-grid,
+            .work-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .work-grid {
+                min-height: auto;
+            }
+
+            .work-grid .editor {
+                min-height: 220px;
+            }
+
+            .card-bank {
+                overflow: visible;
+            }
+
+            .top-grid .case,
+            .guide-bank {
+                padding: 12px;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <header class="top">
+            <div class="brand">⚡ CODE <span>QUEST</span></div>
+
+            <div class="pill">
+                ⭐ Skor: <b id="score">0</b>
+                🎯 <b id="level">1/4</b>
+            </div>
+        </header>
+
+        <div class="bar">
+            <i id="progress"></i>
+        </div>
+
+        <main class="panel">
+            
+            <div class="title-feedback-grid">
+
+                <!-- Judul misi -->
+                <div class="mission-heading">
+                    <div class="tag" id="tag">
+                        MISI 1 · PERCABANGAN
+                    </div>
+                    <h1 id="title">Lengkapi bagian yang kosong!</h1>
+                    <p>
+                        Struktur program sudah disediakan. Seret kartu ke kolom yang tepat.
+                        Di HP, ketuk kartu lalu ketuk slot tujuan.
+                    </p>
+                </div>
+
+                <!-- Feedback jawaban -->
+                <div id="feedback" class="feedback"></div>
+
+            </div>
+
+            <div class="top-grid">
+                <section class="case">
+                    <div class="tag">STUDI KASUS</div>
+                    <div class="story" id="story"></div>
+                    <div class="task" id="task"></div>
+                </section>
+
+                <section class="bank guide-bank">
+                    <h3>📋 Panduan susunan</h3>
+                    <div id="guide">Pilih <b>sintaks</b>, <b>kondisi</b>, dan <b>keluaran</b> yang benar agar <b>sesuai ketentuan.</b> </div>
+                    <p class="guide-note">
+                        Untuk mengganti kartu, ketuk slot yang sudah terisi
+                        untuk mengosongkannya, lalu pilih kartu pengganti.
+                    </p>
+                </section>
+            </div>
+
+            <div class="work-grid">
+                <section class="editor">
+                    <div class="caption">EDITOR KODE C++ || LENGKAPI SLOT</div>
+                    <div id="code"></div>
+                </section>
+
+                <section class="bank card-bank">
+                    <h3>🧩 Kartu yang tersedia</h3>
+                    <small>Pilih kartu sesuai kategori slot.</small>
+
+                    <div class="cat">Sintaks percabangan</div>
+                    <div class="cards" id="syntaxBank"></div>
+
+                    <div class="cat">Kondisi (variabel, operator, nilai)</div>
+                    <div class="cards" id="conditionBank"></div>
+
+                    <div class="cat">Keluaran / operasi</div>
+                    <div class="cards" id="outputBank"></div>
+                </section>
+            </div>
+
+            <div class="actions">
+                <button class="action hint" id="hint">💡 Petunjuk</button>
+                <button class="action secondary" id="reset">Ulangi misi</button>
+                <button class="action primary" id="check">Periksa jawaban</button>
+                <button class="action next" id="next" style="display: none";>Misi berikutnya →</button>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        /* ========================================
+           1. Data misi pembelajaran
+        ======================================== */
+        const missions = [
+            {
+                title: "Misi 1 — Gerbang Kelulusan",
+                story: "Sekolah ingin memeriksa nilai ujian. Siswa dinyatakan lulus jika nilainya minimal 75.",
+                task: "Lengkapi program agar menampilkan Lulus atau Belum lulus.",
+                hint: "Gunakan kondisi nilai >= 75. Jika benar tampilkan Lulus, jika salah tampilkan Belum lulus.",
+                branches: [
+                    ["if", "nilai >= 75", 'cout << "Lulus";'],
+                    ["else", null, 'cout << "Belum lulus";']
+                ],
+                // Alternatif jawaban yang diterima
+                alternatives: [
+                    [
+                        ["if", "nilai >= 75", 'cout << "Lulus";'],
+                        ["else", null, 'cout << "Belum lulus";']
+                    ],
+                    [
+                        ["if", "nilai < 75", 'cout << "Belum lulus";'],
+                        ["else", null, 'cout << "Lulus";']
+                    ]
+                ],
+                pool: {
+                    syntax: ["if", "else", "else if"],
+                    condition: [
+                        "nilai >= 75",
+                        "nilai > 75",
+                        "nilai == 75",
+                        "nilai < 75"
+                    ],
+                    output: [
+                        'cout << "Lulus";',
+                        'cout << "Belum lulus";',
+                        'cout << "Tidak valid";'
+                    ]
+                },
+                why: "if memeriksa kondisi nilai. Jika >=75, program menampilkan Lulus. Jika <75, program menampilkan Belum lulus."
+            },
+
+            {
+                title: "Misi 2 — Promo Kantin",
+                story: "Kantin memberi diskon jika total belanja mencapai Rp50.000. Jika tidak sampai total harga tertentu, pembeli membayar harga normal.",
+                task: "Lengkapi program untuk menentukan apakah pembeli mendapatkan diskon.",
+                hint: "Nilai tepat 50000 juga mendapat diskon. Gunakan operator >=.",
+                branches: [
+                    ["if", "total >= 50000", 'cout << "Dapat diskon";'],
+                    ["else", null, 'cout << "Harga normal";']
+                ],
+                // Alternatif jawaban yang diterima
+                alternatives: [
+                    [
+                        ["if", "total >= 50000", 'cout << "Dapat diskon";'],
+                        ["else", null, 'cout << "Harga normal";']
+                    ],
+                    [
+                        ["if", "total < 50000", 'cout << "Harga normal";'],
+                        ["else", null, 'cout << "Dapat diskon";']
+                    ]
+                ],
+                pool: {
+                    syntax: ["if", "else", "else if"],
+                    condition: [
+                        "total >= 50000",
+                        "total <= 50000",
+                        "total > 50000",
+                        "total < 50000",
+                        "total == 50000",
+                    ],
+                    output: [
+                        'cout << "Dapat diskon";',
+                        'cout << "Harga normal";',
+                        'cout << "Coba lagi";'
+                    ]
+                },
+                why: "Operator sangat berpengaruh pada logika pemrograman, sehingga total Rp50.000 juga termasuk penerima diskon"
+            },
+
+            {
+                title: "Misi 3 — Kategori Nilai",
+                story: "Kategori nilai: A untuk nilai minimal 90, B untuk nilai minimal 80, dan C untuk nilai di bawah 80.",
+                task: "Lengkapi tiga cabang menggunakan if, else if, dan else.",
+                hint: "Periksa batas tertinggi lebih dahulu: nilai >= 90, lalu nilai >= 80. Cabang terakhir menggunakan else.",
+                branches: [
+                    ["if", "nilai >= 90", 'cout << "A";'],
+                    ["else if", "nilai >= 80", 'cout << "B";'],
+                    ["else", null, 'cout << "C";']
+                ],
+                // Alternatif jawaban yang diterima
+                alternatives: [
+                    [
+                        ["if", "nilai >= 90", 'cout << "A";'],
+                        ["else if", "nilai >= 80", 'cout << "B";'],
+                        ["else", null, 'cout << "C";']
+                    ],
+                    [
+                        ["if", "nilai < 80", 'cout << "C";'],
+                        ["else if", "nilai < 90", 'cout << "B";'],
+                        ["else", null, 'cout << "A";']
+                    ]
+                ],
+                pool: {
+                    syntax: ["if", "else if", "else"],
+                    condition: [
+                        "nilai >= 90",
+                        "nilai >= 80",
+                        "nilai > 90",
+                        "nilai < 90",
+                        "nilai < 80",
+                        "nilai <= 80"
+                    ],
+                    output: [
+                        'cout << "A";',
+                        'cout << "B";',
+                        'cout << "C";',
+                        'cout << "D";'
+                    ]
+                },
+                why: "else if memeriksa kondisi alternatif jika kondisi sebelumnya salah. Kondisi disusun secara hirarki dan berurutan agar kategori tidak tertukar."
+            },
+
+            {
+                title: "Misi 4 — Detektif Bilangan",
+                story: "Aplikasi sederhana harus menentukan apakah sebuah bilangan termasuk genap atau ganjil.",
+                task: "Lengkapi percabangan dengan kondisi sisa pembagian bilangan terhadap 2.",
+                hint: "Gunakan operator modulo (%). Bilangan genap memiliki sisa pembagian 2 sama dengan 0.",
+                branches: [
+                    ["if", "angka % 2 == 0", 'cout << "Genap";'],
+                    ["else", null, 'cout << "Ganjil";']
+                ],
+                // Alternatif jawaban yang diterima
+                alternatives: [
+                    [
+                        ["if", "angka % 2 == 0", 'cout << "Genap";'],
+                        ["else", null, 'cout << "Ganjil";']
+                    ],
+                    [
+                        ["if", "angka % 2 == 1", 'cout << "Ganjil";'],
+                        ["else", null, 'cout << "Genap";']
+                    ]
+                ],
+                pool: {
+                    syntax: ["if", "else", "else if"],
+                    condition: [
+                        "angka % 2 == 0",
+                        "angka / 2 == 0",
+                        "angka % 2 == 1",
+                        "angka > 2"
+                    ],
+                    output: [
+                        'cout << "Genap";',
+                        'cout << "Ganjil";',
+                        'cout << "Nol";'
+                    ]
+                },
+                why: "Operator % menghasilkan sisa pembagian. Jika tersisa 0, bilangan tersebut genap. Jika tersisa 1, bilangan tersebut ganjil."
+            },
+
+            {
+                title: "Misi 5 — Detektor Bilangan",
+                story: "Program matematika harus menentukan apakah sebuah bilangan positif, negatif, atau nol.",
+                task: "Lengkapi percabangan untuk mengidentifikasi jenis bilangan berdasarkan nilainya.",
+                hint: "Gunakan operator lebih besar dari, lebih kecil dari, dan kondisi else.",
+                branches: [
+                    ["if", "angka > 0", 'cout << "Positif";'],
+                    ["else if", "angka < 0", 'cout << "Negatif";'],
+                    ["else", null, 'cout << "Nol";']
+                ],
+                alternatives: [
+                    [
+                        ["if", "angka > 0", 'cout << "Positif";'],
+                        ["else if", "angka < 0", 'cout << "Negatif";'],
+                        ["else", null, 'cout << "Nol";']
+                    ],
+                    [
+                        ["if", "angka > 0", 'cout << "Positif";'],
+                        ["else if", "angka == 0", 'cout << "Nol";'],
+                        ["else", null, 'cout << "Negatif";']
+                    ],
+                    [
+                        ["if", "angka < 0", 'cout << "Negatif";'],
+                        ["else if", "angka > 0", 'cout << "Positif";'],
+                        ["else", null, 'cout << "Nol";']
+                    ],
+                    [
+                        ["if", "angka < 0", 'cout << "Negatif";'],
+                        ["else if", "angka == 0", 'cout << "Nol";'],
+                        ["else", null, 'cout << "Positif";']
+                    ],
+                    [
+                        ["if", "angka == 0", 'cout << "Nol";'],
+                        ["else if", "angka > 0", 'cout << "Positif";'],
+                        ["else", null, 'cout << "Negatif";']
+                    ],
+                    [
+                        ["if", "angka == 0", 'cout << "Nol";'],
+                        ["else if", "angka < 0", 'cout << "Negatif";'],
+                        ["else", null, 'cout << "Positif";']
+                    ],
+                ],
+                pool: {
+                    syntax: ["if", "else", "else if"],
+                    condition: [
+                        "angka > 0",
+                        "angka < 0",
+                        "angka == 0",
+                        "angka >= 0",
+                        "angka <= 0",
+                        "angka != 0"
+                    ],
+                    output: [
+                        'cout << "Positif";',
+                        'cout << "Negatif";',
+                        'cout << "Nol";',
+                    ]
+                },
+                why: "Bilangan positif lebih besar dari nol, bilangan negatif lebih kecil dari nol, sedangkan bilangan yang tidak memenuhi kedua kondisi tersebut adalah nol."
+            },
+
+            {
+                title: "Misi 6 — Penentu Suhu",
+                story: "Sebuah aplikasi cuaca harus mengelompokkan suhu udara menjadi kategori tertentu.",
+                task: "Di bawah 20 Dingin, 20-25 Sejuk, 26-30 Hangat, di atas 30 Panas",
+                hint: "Gunakan empat kategori: dingin, sejuk, hangat, dan panas.",
+                branches: [
+                    ["if", "suhu < 20", 'cout << "Dingin";'],
+                    ["else if", "suhu <= 25", 'cout << "Sejuk";'],
+                    ["else if", "suhu <= 30", 'cout << "Hangat";'],
+                    ["else", null, 'cout << "Panas";']
+                ],
+                alternatives: [
+                    [
+                        ["if", "suhu < 20", 'cout << "Dingin";'],
+                        ["else if", "suhu <= 25", 'cout << "Sejuk";'],
+                        ["else if", "suhu <= 30", 'cout << "Hangat";'],
+                        ["else", null, 'cout << "Panas";']
+                    ],
+                    [
+                        ["if", "suhu > 30", 'cout << "Panas";'],
+                        ["else if", "suhu > 25", 'cout << "Hangat";'],
+                        ["else if", "suhu > 20", 'cout << "Sejuk";'],
+                        ["else", null, 'cout << "Dingin";']
+                    ]
+                ],
+                pool: {
+                    syntax: ["if", "else", "else if", "else if"],
+                    condition: [
+                        "suhu < 20",
+                        "suhu <= 25",
+                        "suhu <= 30",
+                        "suhu > 30",
+                        "suhu > 25",
+                        "suhu > 20"
+                    ],
+                    output: [
+                        'cout << "Dingin";',
+                        'cout << "Sejuk";',
+                        'cout << "Hangat";',
+                        'cout << "Panas";',
+                        'cout << "Normal";'
+                    ]
+                },
+                why: "Program memeriksa rentang suhu dari yang terendah. Penggunaan else if membuat setiap suhu hanya masuk ke satu kategori yang sesuai."
+            },
+
+            {
+                title: "Misi 7 — Mesin Diskon",
+                story: "Toko online memberikan diskon berdasarkan total belanja pelanggan.",
+                task: "Tentukan besarnya diskon berdasarkan total belanja: minimal 500000 mendapat diskon 20%, minimal 300000 mendapat 15%, minimal 100000 mendapat 10%, dan sisanya tidak mendapat diskon.",
+                hint: "Periksa total belanja dari nominal terbesar terlebih dahulu.",
+                branches: [
+                    ["if", "total >= 500000", 'cout << "Diskon 20%";'],
+                    ["else if", "total >= 300000", 'cout << "Diskon 15%";'],
+                    ["else if", "total >= 100000", 'cout << "Diskon 10%";'],
+                    ["else", null, 'cout << "Tidak ada diskon";']
+                ],
+                alternatives: [
+                    [
+                        ["if", "total >= 500000", 'cout << "Diskon 20%";'],
+                        ["else if", "total >= 300000", 'cout << "Diskon 15%";'],
+                        ["else if", "total >= 100000", 'cout << "Diskon 10%";'],
+                        ["else", null, 'cout << "Tidak ada diskon";']
+                    ],
+                    [
+                        ["if", "total < 100000", 'cout << "Tidak ada diskon";'],
+                        ["else if", "total < 300000", 'cout << "Diskon 10%";'],
+                        ["else if", "total < 500000", 'cout << "Diskon 15%";'],
+                        ["else", null, 'cout << "Diskon 20%";'],
+                    ]
+                ],
+                pool: {
+                    syntax: ["if", "else", "else if", "else if"],
+                    condition: [
+                        "total >= 500000",
+                        "total >= 300000",
+                        "total >= 100000",
+                        "total < 100000",
+                        "total < 300000",
+                        "total < 500000"
+                    ],
+                    output: [
+                        'cout << "Diskon 20%";',
+                        'cout << "Diskon 15%";',
+                        'cout << "Diskon 10%";',
+                        'cout << "Tidak ada diskon";',
+                        'cout << "Gratis ongkir";'
+                    ]
+                },
+                why: "Pemeriksaan kondisi harus ditulis secara hirarkis/berurutan agar pelanggan mendapatkan kategori diskon yang tepat dan perkondisian yang sesuai"
+            },
+
+            {
+                title: "Misi 8 — Gerbang Usia",
+                story: "Sebuah aplikasi harus menentukan kelompok usia pengguna berdasarkan umur yang dimasukkan.",
+                task: "Kelompokkan pengguna menjadi anak-anak (di bawah 13 tahun), remaja (13–17 tahun), dewasa (18–59 tahun), dan lansia (60 tahun ke atas).",
+                hint: "Gunakan operator perbandingan dan periksa usia secara berurutan.",
+                branches: [
+                    ["if", "usia < 13", 'cout << "Anak-anak";'],
+                    ["else if", "usia < 18", 'cout << "Remaja";'],
+                    ["else if", "usia < 60", 'cout << "Dewasa";'],
+                    ["else", null, 'cout << "Lansia";']
+                ],
+                alternatives: [
+                    [
+                        ["if", "usia < 13", 'cout << "Anak-anak";'],
+                        ["else if", "usia < 18", 'cout << "Remaja";'],
+                        ["else if", "usia < 60", 'cout << "Dewasa";'],
+                        ["else", null, 'cout << "Lansia";']
+                    ],
+                    [
+                        ["if", "usia >= 60", 'cout << "Lansia";'],
+                        ["else if", "usia >= 18", 'cout << "Dewasa";'],
+                        ["else if", "usia >= 13", 'cout << "Remaja";'],
+                        ["else", null, 'cout << "Anak-anak";'],
+                    ]
+                ],
+                pool: {
+                    syntax: ["if", "else", "else if", "else if"],
+                    condition: [
+                        "usia < 13",
+                        "usia < 18",
+                        "usia < 60",
+                        "usia >= 60",
+                        "usia >= 18",
+                        "usia >= 13",
+                        "usia == 17",
+                    ],
+                    output: [
+                        'cout << "Anak-anak";',
+                        'cout << "Remaja";',
+                        'cout << "Dewasa";',
+                        'cout << "Lansia";',
+                        'cout << "Usia tidak valid";'
+                    ]
+                },
+                why: "Setiap kelompok usia memiliki batas yang berbeda. Kondisi diperiksa secara berurutan sehingga pengguna hanya mendapatkan satu kategori usia."
+            },
+            
+        ];
+
+        /* ========================================
+           2. Variabel dan fungsi bantuan
+        ======================================== */
+        let current = 0;
+        let score = 0;
+        let selected = null;
+        let solved = false;
+
+        const completedMissions = [];
+
+        const $ = (id) => document.getElementById(id);
+
+        function shuffle(items) {
+            const result = [...items];
+
+            for (let i = result.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [result[i], result[j]] = [result[j], result[i]];
+            }
+
+            return result;
+        }
+        
+        function showFeedback(type, message, why = "") {
+            const feedback = $("feedback");
+
+            feedback.className = `feedback ${type}`;
+
+            // Pesan utama feedback
+            const messageElement = document.createElement("div");
+            messageElement.className = "feedback-message";
+            messageElement.textContent = message;
+
+            feedback.replaceChildren(messageElement);
+
+            // Tampilkan penjelasan jika tersedia
+            if (why) {
+                const whyElement = document.createElement("div");
+                whyElement.className = "feedback-why";
+
+                const titleElement = document.createElement("strong");
+                titleElement.textContent = "Mengapa demikian?";
+
+                const descriptionElement = document.createElement("div");
+                descriptionElement.textContent = why;
+
+                whyElement.append(titleElement, descriptionElement);
+                feedback.append(whyElement);
+            }
+        }
+
+        function clearSelection() {
+            document.querySelectorAll(".card").forEach((card) => {
+                card.classList.remove("selected");
+            });
+
+            selected = null;
+        }
+
+        /* ========================================
+           3. Pembuatan kartu jawaban
+        ======================================== */
+        function makeCard(text, kind) {
+            const card = document.createElement("button");
+
+            card.type = "button";
+            card.className = "card";
+            card.draggable = true;
+            card.dataset.text = text;
+            card.dataset.kind = kind;
+            card.textContent = text;
+
+            card.addEventListener("click", () => {
+                if (card.classList.contains("used")) return;
+
+                clearSelection();
+                selected = card;
+                card.classList.add("selected");
+            });
+
+            card.addEventListener("dragstart", (event) => {
+                if (card.classList.contains("used")) {
+                    event.preventDefault();
+                    return;
+                }
+
+                selected = card;
+                event.dataTransfer.setData("text", text);
+                event.dataTransfer.setData("kind", kind);
+            });
+
+            return card;
+        }
+
+        /* ========================================
+           4. Pengelolaan slot jawaban
+        ======================================== */
+        function getPlaceholder(kind) {
+            const placeholders = {
+                syntax: "Pilih sintaks",
+                condition: "Pilih kondisi",
+                output: "Pilih keluaran"
+            };
+
+            return placeholders[kind];
+        }
+
+        function releaseSlot(slot) {
+            if (!slot.dataset.value) return;
+
+            const oldValue = slot.dataset.value;
+            const oldKind = slot.dataset.kind;
+
+            const oldCard = [...document.querySelectorAll(".card")].find(
+                (card) =>
+                    card.dataset.kind === oldKind &&
+                    card.dataset.text === oldValue
+            );
+
+            if (oldCard) {
+                oldCard.classList.remove("used");
+            }
+
+            delete slot.dataset.value;
+            slot.textContent = getPlaceholder(oldKind);
+            slot.classList.remove("filled");
+        }
+
+        function putCard(slot, card) {
+            if (!card || card.classList.contains("used")) return;
+
+            // Lepaskan kartu lama jika slot sudah terisi.
+            releaseSlot(slot);
+
+            slot.dataset.value = card.dataset.text;
+            slot.textContent = card.dataset.text;
+            slot.classList.add("filled");
+
+            card.classList.add("used");
+            clearSelection();
+        }
+
+        function makeSlot(kind, index, field) {
+            const slot = document.createElement("button");
+
+            slot.type = "button";
+            slot.className = `slot ${kind}`;
+            slot.dataset.kind = kind;
+            slot.dataset.index = index;
+            slot.dataset.field = field;
+            slot.textContent = getPlaceholder(kind);
+
+            slot.addEventListener("click", () => {
+                if (selected && selected.dataset.kind === kind) {
+                    putCard(slot, selected);
+                    return;
+                }
+
+                if (slot.dataset.value) {
+                    releaseSlot(slot);
+                    clearSelection();
+                }
+            });
+
+            slot.addEventListener("dragover", (event) => {
+                if (event.dataTransfer.getData("kind") === kind) {
+                    event.preventDefault();
+                    slot.classList.add("over");
+                }
+            });
+
+            slot.addEventListener("dragleave", () => {
+                slot.classList.remove("over");
+            });
+
+            slot.addEventListener("drop", (event) => {
+                event.preventDefault();
+                slot.classList.remove("over");
+
+                const text = event.dataTransfer.getData("text");
+                const droppedKind = event.dataTransfer.getData("kind");
+
+                if (droppedKind !== kind) return;
+
+                const card = [...document.querySelectorAll(".card")].find(
+                    (item) =>
+                        item.dataset.kind === droppedKind &&
+                        item.dataset.text === text &&
+                        !item.classList.contains("used")
+                );
+
+                putCard(slot, card);
+            });
+
+            return slot;
+        }
+
+        /* ========================================
+           5. Menyusun tampilan editor kode
+        ======================================== */
+        function buildEditor() {
+            const mission = missions[current];
+            $("code").innerHTML = "";
+
+            mission.branches.forEach((branch, index) => {
+                const syntaxLine = document.createElement("div");
+                syntaxLine.className = "line";
+
+                syntaxLine.append(makeSlot("syntax", index, "syntax"));
+
+                if (branch[0] !== "else") {
+                    const openingParenthesis = document.createElement("span");
+                    openingParenthesis.className = "fixed";
+                    openingParenthesis.textContent = "(";
+
+                    const closingParenthesis = document.createElement("span");
+                    closingParenthesis.className = "fixed";
+                    closingParenthesis.textContent = ") {";
+
+                    syntaxLine.append(
+                        openingParenthesis,
+                        makeSlot("condition", index, "condition"),
+                        closingParenthesis
+                    );
+                } else {
+                    const openingBrace = document.createElement("span");
+                    openingBrace.className = "fixed";
+                    openingBrace.textContent = " {";
+
+                    syntaxLine.append(openingBrace);
+                }
+
+                $("code").append(syntaxLine);
+
+                const outputLine = document.createElement("div");
+                outputLine.className = "line indent";
+                outputLine.append(makeSlot("output", index, "output"));
+
+                $("code").append(outputLine);
+
+                const closingLine = document.createElement("div");
+                closingLine.className = "line fixed";
+                closingLine.textContent = "}";
+
+                $("code").append(closingLine);
+            });
+        }
+
+        /* ========================================
+           6. Memuat misi
+        ======================================== */
+        function loadMission() {
+            const mission = missions[current];
+
+            $("title").textContent = mission.title;
+            $("story").textContent = mission.story;
+            $("task").textContent = mission.task;
+            $("tag").textContent =
+                `MISI ${current + 1} · SUSUN LOGIKA PERCABANGAN`;
+
+            $("level").textContent = `${current + 1}/${missions.length}`;
+            $("progress").style.width =
+                `${(current / missions.length) * 100}%`;
+
+            ["syntax", "condition", "output"].forEach((kind) => {
+                const bank = $(`${kind}Bank`);
+                bank.innerHTML = "";
+
+                shuffle(mission.pool[kind]).forEach((text) => {
+                    bank.append(makeCard(text, kind));
+                });
+            });
+
+            buildEditor();
+            clearSelection();
+
+            $("feedback").className = "feedback";
+            $("feedback").textContent = "";
+            $("next").style.display = "none";
+            
+            solved = false;
+        }
+
+        /* ========================================
+           7. Pemeriksaan jawaban
+        ======================================== */
+        function checkAnswer() {
+            if (solved) return;
+
+            const mission = missions[current];
+            const slots = [...document.querySelectorAll(".slot")];
+
+            const hasEmptySlot = slots.some(
+                (slot) => !slot.dataset.value
+            );
+
+            if (hasEmptySlot) {
+                showFeedback(
+                    "bad",
+                    "Masih ada slot yang kosong. Lengkapi semua bagian terlebih dahulu."
+                );
+                return;
+            }
+
+            const answerSets = mission.alternatives || [mission.branches];
+
+            const isCorrect = answerSets.some((answerSet) => {
+                if (answerSet.length !== mission.branches.length) {
+                    return false;
+                }
+
+                return answerSet.every((branch, index) => {
+                    const getValue = (field) => {
+                        const slot = document.querySelector(
+                            `.slot[data-index="${index}"][data-field="${field}"]`
+                        );
+
+                        return slot ? slot.dataset.value : undefined;
+                    };
+
+                    return (
+                        getValue("syntax") === branch[0] &&
+                        (branch[1] === null ||
+                            getValue("condition") === branch[1]) &&
+                        getValue("output") === branch[2]
+                    );
+                });
+            });
+
+            if (!isCorrect) {
+                showFeedback(
+                    "bad",
+                    "Belum tepat. Periksa kembali sintaks percabangan, kondisi, dan keluaran pada setiap baris."
+                );
+                return;
+            }
+
+            solved = true;
+            score += 10;
+
+            completedMissions.push({
+                title: mission.title,
+                story: mission.story,
+                why: mission.why,
+                points: 10
+            });
+
+            $("score").textContent = score;
+            $("progress").style.width =
+                `${((current + 1) / missions.length) * 100}%`;
+
+            showFeedback(
+                "good",
+                "🎉 Tepat sekali! Semua kartu berada di slot yang benar. Kamu mendapat +10 poin.",
+                mission.why
+            );
+
+            $("next").style.display = "inline-block";
+            $("next").textContent =
+                current === missions.length - 1
+                    ? "Lihat hasil →"
+                    : "Misi berikutnya →";
+        }
+
+        function renderCompletionScreen() {
+            const panel = document.querySelector(".panel");
+            const maxScore = missions.length * 10;
+            const percentage = Math.round((score / maxScore) * 100);
+
+            // Sembunyikan header skor dan progress
+            // document.querySelector(".pill").style.display = "none";
+            // document.querySelector(".bar").style.display = "none";
+
+            panel.innerHTML = `
+                <div class="completion">
+                    <div class="completion-trophy">🏆</div>
+
+                    <div class="tag">CODE QUEST SELESAI</div>
+
+                    <h1>Selamat, Programmer!</h1>
+
+                    <p>
+                        Kamu telah menyelesaikan seluruh tantangan
+                        percabangan C++ dengan hebat!
+                        Terus berlatih, tingkatkan kemampuan logikamu,
+                        dan jangan berhenti belajar!
+                    </p>
+
+                    <div class="final-score">
+                        <strong>${score} / ${maxScore}</strong>
+                        <span>SKOR AKHIR · ${percentage}%</span>
+                    </div>
+                </div>
+
+                <h2 class="result-heading">📚 Rekap Hasil Pengerjaan</h2>
+
+                <div class="result-grid" id="resultGrid"></div>
+            `;
+
+            const grid = $("resultGrid");
+
+            completedMissions.forEach((result, index) => {
+                const card = document.createElement("div");
+                card.className = "result-card";
+
+                card.innerHTML = `
+                    <div class="result-top">
+                        <h3></h3>
+                        <span class="result-badge">✓ BENAR</span>
+                    </div>
+
+                    
+
+                    <div class="result-points">
+                        +${result.points} Poin
+                    </div>
+                `;
+
+                card.querySelector("h3").textContent = result.title;
+                // card.querySelector(".result-story").textContent = result.story;
+                // card.querySelector(".result-why").textContent = result.why;
+
+                grid.appendChild(card);
+            });
+        }
+
+        /* ========================================
+           8. Navigasi dan tombol interaksi
+        ======================================== */
+        $("check").addEventListener("click", checkAnswer);
+
+        // Fungsi untuk mengulangi misi
+        function resetMission() {
+
+            // Jika misi sudah berhasil, kembalikan 10 poin
+            if (solved) {
+                score -= 10;
+
+                // Perbarui tampilan skor
+                $("score").textContent = score;
+
+                // Kembalikan progress bar
+                $("progress").style.width =
+                    `${(current / missions.length) * 100}%`;
+            }
+
+            // Muat ulang misi
+            loadMission();
+        }
+
+        $("reset").addEventListener("click", resetMission);
+
+
+        $("hint").addEventListener("click", () => {
+            showFeedback(
+                "info",
+                `💡 ${missions[current].hint}`
+            );
+        });
+
+        $("next").addEventListener("click", () => {
+            if (!solved) return;
+
+            if (current < missions.length - 1) {
+                current++;
+                loadMission();
+                return;
+            }
+
+            // $("next").style.display = "none";
+
+            // showFeedback(
+            //     "good",
+            //     `🏆 Semua misi selesai! Skor akhir: ${score} dari ${missions.length * 10} poin. Hebat, programmer!`
+            // );
+
+            renderCompletionScreen();
+
+        });
+
+        /* ========================================
+           9. Inisialisasi aplikasi
+        ======================================== */
+        loadMission();
+    </script>
+</body>
+</html>
